@@ -1,17 +1,25 @@
 from tkinter import *
 from tkinter.font import BOLD
 from pytube import YouTube
-from os import getcwd, link
+import time
 
 # functions
+def update_status(temp):
+    statusvar.set(temp)
+    sbar.update()
 def download_video():
+    update_status("Checking link")
     link=URL.get()
     if link!="":
         try:
             yt=YouTube(link)
         except:
-            print("Connection Error")
+            update_status("Enter valid link")
+            time.sleep(1)
+            update_status("Ready to download video")
+            return
 
+        update_status("Collecting information to download video.")
         video = yt.streams.filter(progressive=True,file_extension='mp4')
         video = yt.streams.get_highest_resolution()
 
@@ -19,10 +27,18 @@ def download_video():
 
         try:
             # downloading the video
+            update_status("Downloading video")
             video.download()
         except:
-            print("Some Error!")
-        print('Task Completed!')
+            update_status("Some Error!")
+            # print("Some Error!")
+            # print('Task Completed!')
+        update_status("Video Downloaded")
+    else:
+        update_status("Enter valid link")
+        time.sleep(1)
+        update_status("Ready to download video")
+
 
 # main body
 if __name__=="__main__":
@@ -34,7 +50,9 @@ if __name__=="__main__":
 
     # Variables
     URL = StringVar()
-    # code
+    statusvar = StringVar()
+    statusvar.set("Ready to download video")
+    # code to download a video
     heading1=Label(root,text="ELITE AKSHAY",font="calibre 40 bold",relief=RAISED,background="red",padx=10,pady=9)
     heading1.pack()
     space=Label(root,text="",font="calibre 2 bold")
@@ -54,8 +72,9 @@ if __name__=="__main__":
     download_btn.pack()
     
     
-    
-
+    # statusbar
+    sbar = Label(root,textvariable=statusvar, relief=SUNKEN, anchor="w",padx=10,pady=7,background="cyan",fg="red",font="calibre 12 bold")
+    sbar.pack(side=BOTTOM, fill=X)
 
 
 
