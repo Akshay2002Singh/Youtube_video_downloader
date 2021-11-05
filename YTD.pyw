@@ -1,11 +1,28 @@
 from tkinter import *
 from tkinter.font import BOLD
-
+from pytube import YouTube
+from os import getcwd, link
 
 # functions
 def download_video():
-    pass
+    link=URL.get()
+    if link!="":
+        try:
+            yt=YouTube(link)
+        except:
+            print("Connection Error")
 
+        video = yt.streams.filter(progressive=True,file_extension='mp4')
+        video = yt.streams.get_highest_resolution()
+
+        # print(video)
+
+        try:
+            # downloading the video
+            video.download()
+        except:
+            print("Some Error!")
+        print('Task Completed!')
 
 # main body
 if __name__=="__main__":
@@ -18,19 +35,23 @@ if __name__=="__main__":
     # Variables
     URL = StringVar()
     # code
-    heading1=Label(root,text="ELITE AKSHAY",font="calibre 40 bold",background="red",padx=10,pady=9)
+    heading1=Label(root,text="ELITE AKSHAY",font="calibre 40 bold",relief=RAISED,background="red",padx=10,pady=9)
     heading1.pack()
-    heading2=Label(root,text="YOUTUBE VIDEO DOWNLOADER",font="calibre 20 bold",pady=9)
+    space=Label(root,text="",font="calibre 2 bold")
+    space.pack()
+    heading2=Label(root,text="YOUTUBE VIDEO DOWNLOADER",font="Times 25 bold",relief=RAISED,background="cyan",padx=10,pady=9,)
     heading2.pack()
     f1=Frame(root)
     f1.pack(side=TOP,fill=BOTH,expand=True,pady=10)
-    name=Label(f1,text="ENTER URL OF VIDEL",font="calibre 30 bold",pady=5)
+    name=Label(f1,text="ENTER URL OF VIDEO",font="calibre 30 bold italic",relief=FLAT,padx=8,pady=5,background="yellow",foreground="magenta")
     name.pack()
-    url_input=Entry(f1,textvariable=URL,font="calibre 30 normal")
+    space=Label(f1,text="",font="calibre 2 bold")
+    space.pack()
+    url_input=Entry(f1,textvariable=URL,font="calibre 25 normal",bg="cyan",fg="red",relief=SUNKEN)
     url_input.pack()
 
-    download_btm=Button(f1,text="Download",command=download_video,pady=5)
-    download_btm.pack()
+    download_btn=Button(f1,text="Download",command=download_video,pady=5,bd=5,fg="magenta",font="calibre 18 bold")
+    download_btn.pack()
     
     
     
