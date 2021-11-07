@@ -91,6 +91,8 @@ if __name__=="__main__":
 
     download_btn=Button(f1,text="Download",command=download_video,pady=5,bd=5,fg="red",font="calibre 18 bold")
     download_btn.pack()
+    clear_url_btn=Button(f1,text="CLEAR URL",command=clear_url_box,pady=5,bd=5,font="calibre 12 bold")
+    clear_url_btn.pack()
 
     # show files 
     f2=Frame(root)
