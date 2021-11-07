@@ -6,6 +6,8 @@ from time import sleep
 import os
 
 # functions
+def clear_url_box():
+    URL.set("")
 def update_status(temp):
     statusvar.set(temp)
     sbar.update()
@@ -18,6 +20,7 @@ def download_video():
         except:
             update_status("Enter valid link")
             sleep(0.6)
+            clear_url_box()
             update_status("Ready to download video")
             return
 
@@ -34,14 +37,17 @@ def download_video():
             video.download()
         except:
             update_status("Some Error!")
+            clear_url_box()
             return
             # print("Some Error!")
             # print('Task Completed!')
         update_status("Video Downloaded")
+        clear_url_box()
         delete_list()
     else:
         update_status("Enter valid link")
         sleep(0.4)
+        clear_url_box()
         update_status("Ready to download video")
 def delete_list():
    mylist.delete(0,END)
