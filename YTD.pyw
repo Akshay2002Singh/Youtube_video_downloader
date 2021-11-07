@@ -1,9 +1,7 @@
 from tkinter import *
-from tkinter.font import BOLD
-from typing import List
 from pytube import YouTube
 from time import sleep
-import os
+from os import listdir
 
 # functions
 def clear_url_box():
@@ -53,7 +51,7 @@ def delete_list():
    mylist.delete(0,END)
    showfiles()
 def showfiles():
-    for video_file in os.listdir():
+    for video_file in listdir():
         if video_file.endswith(".mp4"):
             mylist.insert(END,str(video_file)) 
     
