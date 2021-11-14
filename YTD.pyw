@@ -10,6 +10,7 @@ def update_status(temp):
     statusvar.set(temp)
     sbar.update()
 def download_video():
+    print('temp')
     update_status("Checking link")
     link=URL.get()
     if link!="":
@@ -26,12 +27,11 @@ def download_video():
         video = yt.streams.filter(progressive=True,file_extension='mp4')
         video = video.get_highest_resolution()
 
-
         # print(video)
 
         try:
             # downloading the video
-            update_status("Downloading video")
+            update_status(f"Downloading video\nTitle:{video.title}\nSize:{video.filesize/1000000} MB")
             video.download()
         except:
             update_status("Some Error!")
@@ -40,7 +40,9 @@ def download_video():
             # print("Some Error!")
             # print('Task Completed!')
         update_status("Video Downloaded")
+        sleep(0.4)
         clear_url_box()
+        update_status("Ready to download video")
         delete_list()
     else:
         update_status("Enter valid link")
@@ -53,7 +55,7 @@ def delete_list():
 def showfiles():
     for video_file in listdir():
         if video_file.endswith(".mp4"):
-            mylist.insert(END,str(video_file)) 
+            mylist.insert(END," "+str(video_file)) 
     
 
     
@@ -88,7 +90,7 @@ if __name__=="__main__":
     url_input.pack()
 
     download_btn=Button(f1,text="Download",command=download_video,pady=5,bd=5,fg="red",font="calibre 18 bold")
-    download_btn.bind('<Enter>',download_video)
+    # url_input.bind('<Enter>',download_video)
     download_btn.pack()
     clear_url_btn=Button(f1,text="CLEAR URL",command=clear_url_box,pady=5,bd=5,font="calibre 12 bold")
     clear_url_btn.pack()
