@@ -3,6 +3,7 @@ from pytube import YouTube
 from time import sleep
 from os import listdir
 
+tryied_to_download=0
 # functions
 def clear_url_box():
     URL.set("")
@@ -10,13 +11,18 @@ def update_status(temp):
     statusvar.set(temp)
     sbar.update()
 def download_video():
-    print('temp')
+    global tryied_to_download
+    # print('temp')
     update_status("Checking link")
     link=URL.get()
     if link!="":
         try:
             yt=YouTube(link)
         except:
+            tryied_to_download+=1
+            if tryied_to_download<3:
+                download_video()
+                return
             update_status("Enter valid link")
             sleep(0.6)
             clear_url_box()
@@ -34,6 +40,10 @@ def download_video():
             update_status(f"Downloading video\nTitle:{video.title}\nSize:{video.filesize/1000000} MB")
             video.download()
         except:
+            tryied_to_download+=1
+            if tryied_to_download<3:
+                download_video()
+                return
             update_status("Some Error!")
             clear_url_box()
             return
@@ -69,6 +79,8 @@ if __name__=="__main__":
     root.geometry("1000x600")
     root.minsize(1000,600)
     
+    tryied_to_download=0
+
     # Variables
     URL = StringVar()
     statusvar = StringVar()
@@ -82,11 +94,11 @@ if __name__=="__main__":
     heading2.pack()
     f1=Frame(root)
     f1.pack(side=TOP,fill=BOTH,expand=True,pady=10)
-    name=Label(f1,text="ENTER URL OF VIDEO",font="calibre 30 bold italic",relief=FLAT,padx=8,pady=5,background="yellow",foreground="magenta")
+    name=Label(f1,text="ENTER URL OF VIDEO",font="calibre 20 bold italic",relief=FLAT,padx=8,pady=5,)
     name.pack()
     space=Label(f1,text="",font="calibre 2 bold")
     space.pack()
-    url_input=Entry(f1,textvariable=URL,font="calibre 25 normal",bg="cyan",fg="red",relief=SUNKEN)
+    url_input=Entry(f1,textvariable=URL,font="calibre 25 normal",fg="blue",relief=SUNKEN)
     url_input.pack()
 
     download_btn=Button(f1,text="Download",command=download_video,pady=5,bd=5,fg="red",font="calibre 18 bold")
