@@ -4,20 +4,31 @@ from time import sleep
 from os import listdir
 
 tryied_to_download=0
+temp_status=""
+file_size=0
 # functions
 def clear_url_box():
     URL.set("")
 def update_status(temp):
     statusvar.set(temp)
     sbar.update()
+def update_percentage_status(temp):
+    statusvar.set(f"{temp_status}\nDone : {temp*100}%")
+    sbar.update()
+def progress(stream,chunk,byte_remaining):
+    percent = (file_size-byte_remaining)/file_size
+    update_percentage_status(percent)
+    
 def download_video():
     global tryied_to_download
+    global temp_status
+    global file_size
     # print('temp')
     update_status("Checking link")
     link=URL.get()
     if link!="":
         try:
-            yt=YouTube(link)
+            yt=YouTube(link,on_progress_callback=progress)
         except:
             tryied_to_download+=1
             if tryied_to_download<3:
@@ -37,7 +48,9 @@ def download_video():
 
         try:
             # downloading the video
-            update_status(f"Downloading video\nTitle:{video.title}\nSize:{video.filesize/1000000} MB")
+            file_size=video.filesize
+            temp_status=f"Downloading video\nTitle:{video.title}\nSize:{video.filesize/1000000} MB"
+            update_percentage_status(0)
             video.download()
         except:
             tryied_to_download+=1
