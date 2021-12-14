@@ -13,7 +13,7 @@ def update_status(temp):
     statusvar.set(temp)
     sbar.update()
 def update_percentage_status(temp):
-    statusvar.set(f"{temp_status}\nDone : {temp*100}%")
+    statusvar.set(f"{temp_status}\nDone : {int(temp*100)}%")
     sbar.update()
 def progress(stream,chunk,byte_remaining):
     percent = (file_size-byte_remaining)/file_size
