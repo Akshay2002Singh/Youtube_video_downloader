@@ -39,10 +39,14 @@ def download_video():
             clear_url_box()
             update_status("Ready to download video")
             return
-
-        update_status("Collecting information to download video.")
-        video = yt.streams.filter(progressive=True,file_extension='mp4')
-        video = video.get_highest_resolution()
+        try:
+            update_status("Collecting information to download video.")
+            video = yt.streams.filter(progressive=True,file_extension='mp4')
+            video = video.get_highest_resolution()
+        except:
+            update_status("Some Error!")
+            clear_url_box()
+            return
 
         # print(video)
 
@@ -99,7 +103,7 @@ if __name__=="__main__":
     statusvar = StringVar()
     statusvar.set("Ready to download video")
     # code to download a video
-    heading1=Label(root,text="ELITE AKSHAY",font="calibre 40 bold",relief=RAISED,background="red",padx=10,pady=9)
+    heading1=Label(root,text="ELITE VAIBHAV",font="calibre 40 bold",relief=RAISED,background="red",padx=10,pady=9)
     heading1.pack()
     space=Label(root,text="",font="calibre 2 bold")
     space.pack()
@@ -114,11 +118,10 @@ if __name__=="__main__":
     url_input=Entry(f1,textvariable=URL,font="calibre 25 normal",fg="blue",relief=SUNKEN)
     url_input.pack()
 
-    download_btn=Button(f1,text="Download",command=download_video,pady=5,bd=5,fg="red",font="calibre 18 bold")
-    # url_input.bind('<Enter>',download_video)
-    download_btn.pack()
-    clear_url_btn=Button(f1,text="CLEAR URL",command=clear_url_box,pady=5,bd=5,font="calibre 12 bold")
-    clear_url_btn.pack()
+    download_btn=Button(f1,text="Download",command=download_video,bd=5,fg="blue",font="calibre 18 bold")
+    download_btn.pack(side = LEFT, expand = True, fill = X)
+    clear_url_btn=Button(f1,text="CLEAR URL",command=clear_url_box,bd=5,font="calibre 18 bold")
+    clear_url_btn.pack(side = LEFT, expand = True, fill = X)
 
     # show files 
     f2=Frame(root)
